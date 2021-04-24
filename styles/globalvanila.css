@@ -1,0 +1,35 @@
+/*Global Styling*/
+
+ul li {
+    padding: 0.5rem 15px;
+}
+/* .thumbnail-img {
+    width: 1660px !important
+} */
+
+
+
+/*Media Queries*/
+@media all and (min-width: 650px) {
+    .mobile-view {
+        display: none;
+    }
+
+    .menubar ul{
+        display: flex;
+    }
+    .menubar .primary-btn {
+        display: block;
+    }
+}
+
+@media all and (max-width: 650px) {
+    .mobile-view {
+        display: block;
+    }
+
+    .menubar ul,
+    .menubar .primary-btn {
+        display: none;
+    }
+}
