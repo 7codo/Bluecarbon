@@ -12,7 +12,7 @@ function ArticleCard({article}) {
   }
 //featuredImage.fields.file.details.image.height
   return (
-        <article className="bg-white rounded-xl shadow-lg mx-auto my-6 lg:grid lg:grid-cols-2 lg:max-w-screen-lg">
+        <article className="bg-white rounded-xl shadow-lg mx-auto mb-7 lg:grid lg:grid-cols-2 lg:max-w-screen-lg">
           <div className="bg-gray-900 thumbnail-img w-full">
           <img 
             className="w-full md:h-full"

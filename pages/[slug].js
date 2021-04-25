@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import {createClient} from 'contentful'
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+
 import Head from 'next/head'
+import Main from '../components/Main';
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
@@ -33,53 +33,15 @@ export const getStaticProps = async ({params}) => {
 
 function Article({article}) {
   
-  
-  const {title, authorName, method, featuredImage} = article.fields;
-
-
-  const date = () => {
-    const isoStringDate = new Date(article.sys.createdAt);
-    return `${isoStringDate.getDate()}/${isoStringDate.getMonth()}/${isoStringDate.getFullYear()}`
-  }
+  const initialArticles = {sys: {createdAt: ''}, fields: {title: '', authorName: '', method: '', featuredImage: {fields: {file: {url: ''}}}}}
 
   return (
         <>
         <Head>
-          <title>{title}</title>
+          <title>{article.fields.title}</title>
         </Head>
-        <article className="container mx-auto px-8 my-4 lg:max-w-6xl">
-          <div className="head-info">
-            <Image
-              src={`https:${featuredImage.fields.file.url}`}
-              
-              width={600}//will be ignored if layout responsive
-              height={500}
-              alt={featuredImage.fields.title}
-            />
-            <h2 className="text-4xl font-medium leading-tight my-4">{title}</h2>
-          </div>
-          <div className="body-info">
-            <p className="my-4 ">
-              {documentToReactComponents(method)}
-            </p>
-          </div>
-          <div className="footer-info border-t-2 border-gray-300 rounded-sm">
-            <div className="flex items-center py-4"> 
-                <Image
-                  className="rounded-full"
-                  src={`/${authorName.toLowerCase()}.jpg`}
-                  width={70}
-                  height={70}
-                  />
-                  <div className="ml-3 text-lg">
-                    <h3 className="font-bold spaci">
-                      {authorName.replace('_', ' ').toUpperCase()}
-                    </h3>
-                    <p>{date()}</p>
-                  </div>
-              </div>
-          </div>
-        </article>
+        <Main isHomePage={false} articles={initialArticles} article={article} asideTitle={'Recently Articles'} />
+        
         </>
     )
 }

@@ -1,12 +1,16 @@
 import {GrClose} from 'react-icons/gr'
 import {FaFacebook, FaInstagram, FaTwitter, FaYoutube} from 'react-icons/fa'
 import Link from 'next/link'
+import { useGlobalContext } from './State'
 
 function MMenu() {
+
+    const {closeMobileMenu} = useGlobalContext();
+
     return (
         <section className="mm-section container mx-auto p-8 flex flex-col justify-between h-screen">
             <div>
-                <div className="h-12 flex flex-row justify-end px-1">
+                <div className="h-12 flex flex-row justify-end px-1" onClick={() => closeMobileMenu()}>
                     <GrClose className="text-2xl cursor-pointer" />
                 </div>
                 <button className="primary-btn w-full" type="button">sign in</button>

@@ -3,7 +3,8 @@ import {AiOutlineEye, AiOutlineHeart, AiOutlineComment} from 'react-icons/ai'
 function UserUpdateCard({lastPost, picture, fullname, id}) {
     const reactionStyle = "inline-block text-2xl mr-1";
     return (
-        <div className={`py-7 px-8 bg-white max-w-xs shadow-lg rounded-sm ${id === 1? '': 'ml-5'}`}>
+        <div className={`py-7 px-8 bg-white max-w-xs hover:shadow-lg rounded-sm border-gray-100 border-2 transition-shadow
+        mb-3`}>
             <div className="head flex items-center justify-center">
                 <Image 
                     className="rounded-full"
