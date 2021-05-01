@@ -7,6 +7,9 @@ ul li {
     width: 1660px !important
 } */
 
+.active-tab {
+    border-bottom: 1px #333 solid;
+}
 
 
 /*Media Queries*/

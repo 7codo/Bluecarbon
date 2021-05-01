@@ -5,24 +5,84 @@ import ArticleCard from './ArticleCard'
 import Image from 'next/image'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import RecentlyArticlesCard from "./RecentlyArticlesCard"
+import { motion } from "framer-motion"
+import {authorCapitalise} from '../data/Feauters'
+import Link from "next/link"
+import { useGlobalContext } from "./State"
+import AuthorPO from './AuthorPO'
+
+const articleCardVrnts = {
+  from: {
+      opacity: 0,
+      x: '-100vh'
+
+  },
+  to: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: 'sring',
+        ease: 'easeInOut'
+      }
+  }
+}
 
 
-function Main({asideTitle, isHomePage, articles,article}) {
+const asideVrnts = {
+  from: {
+      opacity: 0,
+      y: "100vh",
+  },
+  to: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.02
+      }
+  }
+}
+
+const articleBodyVrnts = {
+  from: {
+      opacity: 0,
+  },
+  to: {
+      opacity: 1,
+      transition: {
+      }
+  }
+}
+
+
+function Main({asideTitle, isHomePage, articles,article, recentlyArticles}) {
     const {title, authorName, method, featuredImage} = article.fields;
+    const capitaliseName = authorCapitalise(authorName);
+    const {isProfileOverview, openProfileOverview} = useGlobalContext()
     
     const date = () => {
         const isoStringDate = new Date(article.sys.createdAt);
         return `${isoStringDate.getDate()}/${isoStringDate.getMonth()}/${isoStringDate.getFullYear()}`
     }
 
+    if (recentlyArticles.length > 4) {
+      recentlyArticles = recentlyArticles.slice(0, 5)
+    }
+
     return (
-        <div className="container mx-auto px-4 lg:flex my-5 justify-center">
+      <>
+        {
+          isProfileOverview && 
+          <AuthorPO />
+        }
+       <div className="container mx-auto px-4 lg:flex my-5 justify-center">
       
       <div className="xl:mr-10 lg:mr-5">
         {
             isHomePage? articles.map((article, index) => {
-                return <ArticleCard key={index} article={article} />
-             }):<article className="container mx-auto px-8 my-4 lg:max-w-6xl xl:max-w-4xl">
+                return <motion.div key={index} variants={articleCardVrnts} initial='from' animate='to'>
+                  <ArticleCard key={index} article={article} />
+                </motion.div>
+             }):<motion.article variants={articleBodyVrnts} initial='from' animate='to' className="container mx-auto px-8 my-4 lg:max-w-6xl xl:max-w-4xl">
              <div className="head-info">
                <Image
                  src={`https:${featuredImage.fields.file.url}`}
@@ -48,26 +108,34 @@ function Main({asideTitle, isHomePage, articles,article}) {
                      />
                      <div className="ml-3 text-lg">
                        <h3 className="font-bold spaci">
-                         {authorName.replace('_', ' ').toUpperCase()}
+                         <Link href={`/author/@${authorName}`}><a>
+                           {capitaliseName}
+                         </a></Link>
                        </h3>
                        <p>{date()}</p>
                      </div>
                  </div>
              </div>
-           </article>
+           </motion.article>
            
         }
       </div>
 
-      <aside className="comunity-section lg:flex lg:flex-col hidden">
+      <motion.aside variants={asideVrnts} initial="from" animate="to" className="comunity-section lg:flex lg:flex-col hidden">
         <h4 className="text-xl font-bold pl-2 pb-5">{asideTitle}</h4>
         {
             isHomePage? authors.map(author => {
                 return <UUCard key={author.id} {...author} />
-            }):<RecentlyArticlesCard />
+            }):(
+              recentlyArticles.map(item => {
+                const {featuredImage, slug, title, authorName} = item.fields;
+                  return <RecentlyArticlesCard key={slug} featuredImage={featuredImage.fields.file.url} title={title} authorName={authorName} slug={slug} />
+              })
+            )
         }
-      </aside>
+      </motion.aside>
     </div>
+    </>
     )
 }
 

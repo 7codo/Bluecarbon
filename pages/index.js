@@ -1,4 +1,5 @@
 import {createClient} from 'contentful'
+import { FaCommentsDollar } from 'react-icons/fa'
 import Main from '../components/Main'
 
 
@@ -13,6 +14,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       articles: res.items,
+    
     },
     revalidate: 1,
   }
@@ -20,9 +22,11 @@ export const getStaticProps = async () => {
 
 export default function Home({articles}) {
 
+
   const initialArticle = {sys: {createdAt: ''}, fields: {title: '', authorName: '', method: '', featuredImage: {fields: {file: {url: ''}}}}}
+  const initialRA = [initialArticle]
 
   return (
-    <Main isHomePage={true} articles={articles} article={initialArticle} asideTitle={'Top Authors'} />
+    <Main isHomePage={true} articles={articles} article={initialArticle} asideTitle={'Top Authors'} recentlyArticles={initialRA} />
   )
 }
